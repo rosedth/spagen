@@ -95,25 +95,35 @@ public class Lexer {
 		StringBuilder sb = new StringBuilder();
 		sb.append((char)c);
 		
-		c = this.readAndUpdatePos();
 		this.bufferedReader.mark(1);
+		c = this.read();
 		while (Character.isLetterOrDigit(c)) {
+			this.updatePos(c);
 			sb.append((char)c);
 			this.bufferedReader.mark(1);
-			c = this.readAndUpdatePos();
+			c = this.read();
 		}
 		
 		this.bufferedReader.reset();
 		return new Token(TokenType.ID, sb.toString());
 	}
 	
-	private int readAndUpdatePos() throws IOException {
-		int c = this.bufferedReader.read();
+	private void updatePos(int c) {
 		if (c == '\n') {
 			this.line++;
 			this.column = 1;
 		} else
 			this.column++;
+				
+	}
+	
+	private int read() throws IOException {
+		return this.bufferedReader.read();
+	}
+	
+	private int readAndUpdatePos() throws IOException {
+		int c = this.read(); 
+		this.updatePos(c);
 		return c;
 	}
 	

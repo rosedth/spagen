@@ -104,10 +104,10 @@ public class Grammar {
 				computeUndeclared(e, declared, undeclared);
 		} else if (expr instanceof RepeatExpr) {
 			RepeatExpr repeatExpr = (RepeatExpr) expr;
-			computeUndeclared(repeatExpr, declared, undeclared);
+			computeUndeclared(repeatExpr.getExpression(), declared, undeclared);
 		} else if (expr instanceof OptExpr) {
 			OptExpr optExpr = (OptExpr) expr;
-			computeUndeclared(optExpr, declared, undeclared);
+			computeUndeclared(optExpr.getExpression(), declared, undeclared);
 		} else if (expr instanceof NonTermExpr) {
 			NonTermExpr nonTermExpr = (NonTermExpr) expr;
 			String name = nonTermExpr.getName(); 

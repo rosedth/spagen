@@ -15,13 +15,18 @@ public class Main {
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 		Parser p = new Parser(in);
 		Grammar g = p.parse();
-		System.out.println(g);
-		System.out.println(g.selfRecursives());
-		SPA spa = SPA.fromGrammar(g);
-		spa.deleteEmpty();
-		spa.deleteUnreachables();
-		for (Machine machine : spa.getMachines())
-			machine.writeDot(new OutputStreamWriter(System.out));
+		if (!g.undeclaredRules().isEmpty()) {
+			for (String rulename : g.undeclaredRules()) {
+				System.out.println("undeclared rule: " + rulename);
+			}
+		} else {
+			SPA spa = SPA.fromGrammar(g);
+			spa.deleteEmpty();
+			spa.deleteUnreachables();
+			
+			for (Machine machine : spa.getMachines())
+				machine.writeDot(new OutputStreamWriter(System.out));
+		}
 	}
 	
 }
