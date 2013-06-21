@@ -77,21 +77,28 @@ public class Machine {
 		pw.print("digraph ");
 		pw.print(this.id);
 		pw.println(" {");
-		pw.print("\tnode [shape = doublecircle];");
+		pw.println("\tghost [shape = none, style=solid, label = "+this.id+ "];");
+		pw.println("\t// initial state");
+		pw.println("\tnode [shape = circle];"+m.get(this.init)+";");		
+		pw.println("\tghost -> "+ m.get(this.init)+" [label = \"\", style=invis];");
+		pw.println("\t// final states");
+		pw.print("\tnode [shape = doublecircle, style=filled]");
 		for (State finalState : this.getFinalStates()) {
+			pw.print(";");
 			pw.print(" ");
 			pw.print(m.get(finalState));
 		}
 		pw.println(";");
-		pw.println("\tghost [shape = none, label = \"\"];");
-		pw.println("\tnode [shape = circle];");
-		pw.print("\tghost -> ");
-		pw.print(m.get(this.init));
-		pw.print(" [ label = \"");
-		pw.print(this.id);
-		pw.println("\" ];");
+		pw.println();
+
+		pw.println("\tnode [shape = circle, style=solid];");
+
+		pw.println();
+		pw.println("\t// transitions");		
+		
 		for (State from : this.states) {
 			Map<Symbol, Set<State>> transitions = from.getTransitions();
+			
 			for (Entry<Symbol, Set<State>> entry : transitions.entrySet()) {
 				Symbol symbol = entry.getKey();
 				for (State to : entry.getValue()) {
@@ -99,16 +106,24 @@ public class Machine {
 					pw.print(m.get(from));
 					pw.print(" -> ");
 					pw.print(m.get(to));
-					pw.print(" [ label = \"");
-					pw.print(symbol.getLabel());
-					pw.println("\" ];");
+					pw.print(" [label = \"");
+					if (symbol instanceof Call){
+						
+						pw.print(symbol.getLabel());
+						pw.println("\", color=blue, style=bold];");
+					}else{
+						pw.print("\\\"");
+						pw.print(symbol.getLabel());
+						pw.println("\\\"\", style=solid];");
+					}
 				}
 			}
+			
 		}
 		pw.println("}");
 		pw.flush();
 	}
-	
+		
 	private Map<State, Integer> numberedStates() {
 		Map<State, Integer> m = new HashMap<State, Integer>();
 		for (State s : this.states)

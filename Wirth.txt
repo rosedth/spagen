@@ -1,0 +1,35 @@
+Program="PROGRAM" id ["("Idlist")" ]";" Block ".".
+Idlist=id{"," id}.
+Block=[Labeldecl][Typedecl][Vardecl][Subdecl] Composite.
+Labeldecl="LABEL" num{","num}.
+Typedecl="TYPE" Typedef{";" Typedef} ";".
+Typedef= id "=" Type.
+Type= id|"ARRAY" [Index {"," Index}] "OF" Type.
+Index=num ".." num.
+Vardecl= "VAR" Vdecl {";" Vdecl} ";".
+Vdecl=Idlist ":" Type.
+Subdecl={Procdecl";"|Funcdecl ";"}.
+Procdecl="PROCEDURE" id [ Param ] ";" Block.
+Funcdecl="FUNCTION" id [ Param ]":" id ";" Block.
+Param="(" Secpar {";"Secpar} ")".
+Secpar= ["VAR"] Idlist ":" id|"FUNCTION" Idlist ":" id| "PROCEDURE" Idlist ":" Idlist.
+Composite= "BEGIN" Command {";" Command} "END".
+Command=[num ":" ] Com.
+Com= Assigment|Call|Goto|Composite|Conditional|Loop.
+Assigment= Variable ":=" Expression.
+Call= id ["(" Exprlist ")"].
+Goto= "GOTO" num.
+Conditional= "IF" Expression "THEN" Com ["ELSE" Com].
+Loop= "WHILE" Expression "DO" Com.
+Exprlist=Expression{"," Expression}.
+Expression= Simplexpr [Relation Simplexpr].
+Relation="="|"<>"|"<"|"<="|">="|">".
+Simplexpr=["+"|"-"] Term {("+"|"-"|"OR") Term}.
+Term=Factor{("*"|"DIV"|"AND")Factor}.
+Factor=Variable|num|Funcall|"(" Expression ")"| "NOT" Factor.
+Variable=id|id "[" Exprlist "]".
+Funcall=id["(" Expression ")"].
+num= Digit{Digit}.
+Digit="0"|"1"|"2"|"3"|"4"|"5"|"6"|"7"|"8"|"9".
+id=Letter{Letter|Digit}.
+Letter= "a"|"b"|"c"|"d"|"e"|"f"|"g"|"h"|"i"|"j"|"k"|"l"|"m"|"n"|"o"|"p"|"q"|"r"|"s"|"t"|"u"|"v"|"w"|"x"|"y"|"z".

@@ -1,5 +1,4 @@
 package br.usp.poli.lta.spagen.wirth;
-
 public enum TokenType {
 	EOF,
 	LPAREN,
@@ -11,6 +10,6 @@ public enum TokenType {
 	DOT,
 	EQ,
 	PIPE,
-	ID,
-	STRING
+	ID,	
+	STRING,
 }
